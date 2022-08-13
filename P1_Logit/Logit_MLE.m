@@ -1,4 +1,6 @@
-% Question 1) MLE
+% Estimation of binary logit model with 3 regressors using MLE
+% Ignacio Nunez, Economics Department, UT-Austin, ijnunez@utexas.edu
+
 clear;clear global;
 
 % First, I load the data into variables
@@ -37,21 +39,12 @@ DL_theta2=(loglike([theta_hat(1);theta_hat(2)*(1+step);theta_hat(3)])-loglike(th
 DL_theta3=(loglike([theta_hat(1);theta_hat(2);theta_hat(3)*(1+step)])-loglike(theta_hat))/(step*theta_hat(3));
 DL=[DL_theta1,DL_theta2,DL_theta3];
 
-% Using the derivatives above and the formula in the assignment of PS1, I
-% calculate the variance-covariance matrix and then the standard errors.
+% Using the derivatives above, I calculate the variance-covariance matrix and then the standard errors.
 
 V=inv(transpose(DL)*DL);
 SE_theta=zeros(size(theta_hat,1),1);
 for i=1:size(theta_hat,1)
 SE_theta(i)=sqrt(V(i,i));
 end
-
-% Now, I calculate the effect of an additional year of education on the probability 
-% of an average women working
-
-avg_X=mean(X,1);
-new_X=[avg_X(1), avg_X(2), avg_X(3)+1];
-p_avg=normcdf(new_X*theta_hat)-normcdf(avg_X*theta_hat);
-
 
 
